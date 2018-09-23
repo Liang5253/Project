@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="user">
+	<cache/>
+	
+	<!-- insertuser 单行插入，自动递增id -->
+	<insert id="insertuser" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
+	<selectKey keyProperty="userId" resultType="int" order="BEFORE">
+		select if(max(user_id) is null,1,max(id)+1) as newId from t_user
+	</selectKey>
+		insert into t_user(
+		<include refid="colName"/>
+		) values(#{userId},#{userName},#{userBirthday},#{userSex},#{userMobile},#{userEmail},#{userNote})
+	</insert>
+	
+	<!-- updateuser -->
+	<update id="updateuser" parameterType="user">
+		update t_user
+		<set>
+			<if test="userName !=null ">user_name=#{userName},</if>
+			<if test="userBirthday !=null ">user_name=#{userBirthday},</if>
+			<if test="userSex !=null ">user_name=#{userSex},</if>
+			<if test="userMobile !=null ">user_name=#{userMobile},</if>
+			<if test="userEmail !=null ">user_name=#{userEmail},</if>
+			<if test="userNote != null">user_note=#{userNote}</if>
+			where user_id=#{userId}
+		</set>
+	</update>
+	
+	<!-- deleteuser -->
+	<delete id="deleteuser" parameterType="int">
+		delete from t_user where user_id=#{id}
+	</delete>
+	
+	<!-- select col sql -->
+	 <sql id="colName">
+	 		   user_id,
+	 		   user_name,
+	 		   user_birthday,
+	 		   user_sex,
+	 		   user_mobile,
+	 		   user_email,
+	 		   user_note
+	 </sql>
+	 
+	 <!-- resultMapuser -->
+	 <resultMap type="userBean" id="userMap">
+	 	<id column="user_id" property="userId"/>
+	 	<result column="user_name" property="userName"/>
+	 	<result column="user_create_date" property="userCreateDate"/>
+	 	<result column="user_note" property="userNote"/>
+	 </resultMap>
+	<!-- getuser -->
+	<select id="getuser" parameterType="int" resultMap="userMap">
+	select <include refid="colName"/> from t_user where user_id=#{id}
+	</select>
+	
+	<!-- findusers -->
+	<select id="findusers" parameterType="string" resultType="user">
+	select <include refid="colName"/> from t_user where user_name like concat('%',#{userName},'%')
+	</select>
+	
+</mapper>

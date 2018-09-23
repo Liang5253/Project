@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxz.org.dao.EmpDao" >
+	<cache/>
+	
+	<!-- select col sql -->
+	 <sql id="emplow">
+	 empno,ename,job,mgr,hiredate,sal,comm,deptno
+	 </sql>
+	 
+	 <!-- resultMapEmp -->
+	 <resultMap type="com.lxz.org.pojo.Emp" id="empMap">
+	 	<id column="empno" property="empno"/>
+	 	<result column="ename" property="ename"/>
+	 	<result column="job" property="job"/>
+	 	<result column="mgr" property="mgr"/>
+	 	<result column="hiredate" property="hiredate"/>
+	 	<result column="sal" property="sal"/>
+	 	<result column="comm" property="comm"/>
+	 	<result column="deptno" property="deptno"/>
+	 </resultMap>
+	 
+	 
+	 	 <!-- resultMapEmp -->
+		 <resultMap type="com.lxz.org.pojo.Emp" id="empAndDeptMap">
+	 	<id column="empno" property="empno"/>
+	 	<result column="ename" property="ename"/>
+	 	<result column="job" property="job"/>
+	 	<result column="mgr" property="mgr"/>
+	 	<result column="hiredate" property="hiredate"/>
+	 	<result column="sal" property="sal"/>
+	 	<result column="comm" property="comm"/>
+	 	<result column="deptno" property="deptno"/>
+	 	<association property="dept" column="deptno" 
+	 	select="com.lxz.org.dao.EmpDao.selectDeptfordeptno">
+	 	
+	 	</association>
+	 </resultMap>
+	 
+	<!-- getEmp -->
+	<select id="getEmp" parameterType="int" resultMap="empMap">
+	select <include refid="emplow"/> where empno=#{id}
+	</select>
+	
+	
+	<!-- getAll -->
+	<select id="getAll"  resultMap="empAndDeptMap">
+	select <include refid="emplow"/> from EMP
+	</select>
+	
+	
+	
+	<!-- findEmps	 -->
+	<select id="findEmp"  resultMap="empMap">
+		select e1.empno,e1.ename,e1.job,e1.mgr,e1.hiredate,e1.sal,e1.comm,e1.deptno
+		from (select e2.empno,e2.ename,e2.job,e2.mgr,e2.hiredate,e2.sal,e2.comm,e2.deptno,ROWNUM as ro 
+		from (select <include refid="emplow"></include> from emp order by ${so}) e2 where ROWNUM &lt;= #{end}) e1 
+		where ro &gt;=#{start}
+	</select>
+	
+	
+	
+	<select id="findEmp1"  parameterType="com.lxz.org.pojo.CursorResult" statementType="CALLABLE" useCache="false">
+		{CALL find_emp(
+			#{start,mode=IN,jdbcType=NUMERIC},
+			#{end,mode=IN,jdbcType=NUMERIC},
+			#{count,mode=OUT,jdbcType=NUMERIC},
+			#{empList,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=empMap}
+		)}
+	</select>
+	
+	<select id="selectDeptfordeptno" parameterType="int" resultMap="deptMap">
+		select deptno,dname,loc from dept where deptno = #{deptno}
+	</select>
+	<resultMap type="com.lxz.org.pojo.Dept" id="deptMap">
+		<id column="deptno" property="deptno"/>
+		<result column="dname" property="dname"/>
+		<result column="loc" property="loc"/>
+	</resultMap>
+</mapper>

@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.lxz</groupId>
+    <artifactId>internet_ssm</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.lxz.org</groupId>
+  <artifactId>springmvc_mybatis</artifactId>
+  <packaging>war</packaging>
+
+
+ 
+<build>  
+<finalName>springmvc_mybatis</finalName>  
+<plugins>  
+    <plugin>  
+        <groupId>org.apache.maven.plugins</groupId>  
+        <artifactId>maven-war-plugin</artifactId>  
+        <version>2.1.1</version>  
+        <configuration>  
+              <webXml>target\WebContent\WEB-INF\web.xml</webXml>          
+        </configuration>  
+    </plugin>  
+</plugins>  
+ </build> 
+ 
+ 
+<!--   <build>
+    <finalName>internet_ssm</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.mybatis.generator</groupId>
+        <artifactId>mybatis-generator-maven-plugin</artifactId>
+        <version>1.3.2</version>
+        <configuration>
+        <webXml>WebContent\WEB-INF\web.xml</webXml>   
+          <verbose>true</verbose>
+          <overwrite>true</overwrite>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  -->
+  </project>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxz.org.dao.UserDao">
+	<cache/>
+	
+	<!-- insertuser 单行插入，自动递增id -->
+	<insert id="insertUser" parameterType="com.lxz.org.pojo.UserBean" useGeneratedKeys="true" keyProperty="userId">
+	<selectKey keyProperty="userId" resultType="int" order="BEFORE">
+		select decode(max(id), null,1,max(id)+1) as newId from t_user
+	</selectKey>
+		insert into t_user(
+		<include refid="colName"/>
+		) values(#{userId},#{userName},#{userBrithday},#{userSex},#{userMobile},#{userEmail},#{userNote})
+	</insert>
+	
+	<!-- updateuser -->
+	<update id="updateUser" parameterType="com.lxz.org.pojo.UserBean">
+		update t_user
+		<set>
+			<if test="userName !=null ">user_name=#{userName},</if>
+			<if test="userBrithday !=null ">user_name=#{userBrithday},</if>
+			<if test="userSex !=null ">user_name=#{userSex},</if>
+			<if test="userMobile !=null ">user_name=#{userMobile},</if>
+			<if test="userEmail !=null ">user_name=#{userEmail},</if>
+			<if test="userNote != null">user_note=#{userNote}</if>
+			where id=#{userId}
+		</set>
+	</update>
+	
+	<!-- deleteuser -->
+	<delete id="deleteUser" parameterType="int">
+		delete from t_user where id=#{id}
+	</delete>
+	
+	<!-- select col  sql -->
+	
+	 <sql id="colName">
+	 id,user_name,user_brithday,user_sex,user_mobile,user_email,user_note
+	 </sql>
+	 
+	 <!-- resultMapuser -->
+	 <resultMap type="com.lxz.org.pojo.UserBean" id="userMap">
+	 	<id column="id" property="userId"/>
+	 	<result column="user_name" property="userName"/>
+	 	<result column="user_brithday" property="userBrithday"/>
+	 	<result column="user_sex" property="userSex"/>
+	 	<result column="user_mobile" property="userMobile"/>
+	 	<result column="user_email" property="userEmail"/>
+	 	<result column="user_note" property="userNote"/>
+	 </resultMap>
+	<!-- getuser -->
+	<select id="getUser" parameterType="int" resultMap="userMap">
+	select <include refid="colName"/> from t_user where id=#{id}
+	</select>
+	
+	<!-- findusers -->
+	<select id="findUsers" parameterType="string" resultMap="userMap">
+	select <include refid="colName"/> from t_user where user_name like concat(#{userName},'%')
+	</select>
+	
+</mapper>

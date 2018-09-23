@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper >
+  <cache-ref namespace="lxz.org.dao.EmpDao"/>
+  	<resultMap type="lxz.org.pojo.Emp" id="empMap">
+	 	<id column="empno" property="empno"/>
+	 	<result column="ename" property="ename"/>
+	 	<result column="job" property="job"/>
+	 	<result column="mgr" property="mgr"/>
+	 	<result column="hiredate" property="hiredate"/>
+	 	<result column="sal" property="sal"/>
+	 	<result column="comm" property="comm"/>
+	 </resultMap>
+  	
+  <insert id="">
+  	insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values
+  	<foreach collection="" >
+  	values(#{empno},#{ename},#{job},#{mgr},#{hiredate},#{sal},#{comm})
+  	</foreach>
+  </insert>
+</mapper>

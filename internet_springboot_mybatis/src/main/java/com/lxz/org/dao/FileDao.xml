@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxz.org.dao.FileTableDao">
+	<cache/>
+	
+	<!-- insertuser 单行插入，自动递增id -->
+	<insert id="insertUser" parameterType="com.lxz.org.pojo.FileTable" useGeneratedKeys="true" keyProperty="fileId">
+	<selectKey keyProperty="fileId" resultType="int" order="BEFORE">
+		select decode(max(file_id), null,1,max(file_id)+1) as newId from filetable
+	</selectKey>
+		insert into filetable (file_id,file_file
+		) values(#{fileId},#{fileFile},)
+	</insert>
+	
+	
+	
+</mapper>
