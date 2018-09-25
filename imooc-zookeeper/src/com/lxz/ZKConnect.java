@@ -1,8 +1,8 @@
-package com.lxz;
+﻿package com.lxz;
 
 public class ZKConnect  {
 	
-	public static final String zkServerPath="139.9.1.251:2181,139.9.1.251:2182,139.9.1.251:2183";
+	public static final String zkServerPath="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183";
 	
 	public static void main(String[] args) {
 		ZKConns zks=new ZKConns();

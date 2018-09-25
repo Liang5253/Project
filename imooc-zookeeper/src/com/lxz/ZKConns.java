@@ -1,4 +1,4 @@
-package com.lxz;
+﻿package com.lxz;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -28,7 +28,7 @@ public class ZKConns implements Watcher{
 	private ZooKeeper zk;
 	private long sessionId;
 	private byte[] sessionPasswd;
-	private static final String ipPath="139.9.1.251:2181,139.9.1.251:2182,139.9.1.251:2183";
+	private static final String ipPath="127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183";
 	private  final int timeout=5000;
 	Stat stat=new Stat();
 	CountDownLatch countDown =new CountDownLatch(1);
